@@ -1,0 +1,7 @@
+brand,name,url,price_selector
+Canyon,Neuron CF 8.0,https://www.canyon.com/cs-cz/mountain-bikes/trail-bikes/neuron/neuron-cf-8.0/2471.html,"input[id=""financing-amount""]"
+Canyon,Neuron AL 7.0,https://www.canyon.com/cs-cz/mountain-bikes/trail-bikes/neuron/neuron-al-7.0/2468.html,"input[id=""financing-amount""]"
+Orbea,Occam H20,https://www.orbea.com/cz-en/bicycles/mountain/occam/cat/occam-h20-20,#price > span.num
+Orbea,Occam H20,https://www.albie.cz/occam-tr/orbea-occam-h20-2020/,"meta[itemprop=""price""]"
+YT,Jeffsy Comp,https://www.yt-industries.com/detail/index/sArticle/2362/sCategory/508,"meta[itemprop=""price""]"
+Orbea,Occam H20,https://www.cyklokyjovsky.cz/celoodpruzene-kolo-orbea-occam-h20-2020/d47750,"meta[itemprop=""price""]"
