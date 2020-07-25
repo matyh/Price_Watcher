@@ -10,26 +10,51 @@ eur_czk_rate = 26.25
 # load data into df
 data_df = pd.read_csv('config.csv', delimiter=',', header=0)
 
-url = data_df['url']
-price_selector = data_df['price_selector']
-name_selector = data_df['name']
 
-for u, p, n in zip(url, price_selector, name_selector):
-    page = requests.get(u)
-    soup = bs4.BeautifulSoup(page.content, 'html.parser')
-    name = n
+class Bike(object):
+    def __init__(self, brand, name, url, price_selector):
+        self.brand = brand
+        self.name = name
+        self.url = url
+        self.price_selector = price_selector
 
-    price = soup.select(p)
-    if len(price) > 1 and not all([p == price[0] for p in price]):
-        # following is for debugging
-        print(u)
-        for i in price:
-            print(i)
-        #
-        raise ValueError("Multiple results")
-    else:
-        result = price[0].get('content')
-        if result is None:
-            result = price[0].get('data-price')
+    def get_price(self):
+        page = requests.get(self.url)
+        soup = bs4.BeautifulSoup(page.content, 'html.parser')
+        price = soup.select(self.price_selector)
+        if len(price) > 1 and not all([p == price[0] for p in price]):
 
-    print(f'{name:<30} {result}')
+            # for debugging
+            print(self.url)
+            for i in price:
+                print(i)
+            #
+
+            raise ValueError("Multiple results")
+        else:
+            result = price[0].get('content')
+            if result is None:
+                result = price[0].get('data-price')
+        return result
+
+
+with open('config.csv', 'r') as f:
+    reader = csv.reader(f, delimiter=',')
+    data_header = next(reader)
+    assert data_header == ['brand', 'name', 'url', 'price_selector'], \
+        "Wrong data order"
+
+    data = []
+    for line in reader:
+        data.append(line)
+
+
+bikes = []
+for line in data:
+    bike = Bike(*line)
+    bikes.append(bike)
+
+# print(bikes[6].get_price())
+for bike in bikes:
+    price = bike.get_price()
+    print(f'{bike.brand:<10} {bike.name:<20} {price}')
