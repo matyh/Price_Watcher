@@ -4,7 +4,10 @@ import csv
 import bs4
 from price_parser import Price
 import pandas as pd
+import re
 
+
+numbers = "0123456789"
 eur_czk_rate = 26.25
 
 # load data into df
@@ -32,9 +35,18 @@ class Bike(object):
 
             raise ValueError("Multiple results")
         else:
+            # print(price)  # temp
             result = price[0].get('content')
+            # for Canyon
             if result is None:
                 result = price[0].get('data-price')
+            # for Triexpert url
+            if result is None:
+                result = price[0].text.strip()
+                result = re.sub(r'\D', '', result)
+            if ',' in result:
+                result = result.replace(',', '.')
+            result = float(result)
         return result
 
 
@@ -54,7 +66,7 @@ for line in data:
     bike = Bike(*line)
     bikes.append(bike)
 
-# print(bikes[6].get_price())
+# print(bikes[10].get_price())  # temp
 for bike in bikes:
     price = bike.get_price()
     print(f'{bike.brand:<10} {bike.name:<20} {price}')
